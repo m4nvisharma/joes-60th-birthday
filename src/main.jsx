@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createClient } from '@supabase/supabase-js';
-import { ArrowDownRight, ArrowUpRight, Check, ChevronDown, LoaderCircle, Sparkles, Trash2, X } from 'lucide-react';
+import { ArrowDownRight, ArrowUpRight, Check, LoaderCircle, Sparkles, Trash2, X } from 'lucide-react';
 import './styles.css';
 
 const GOAL = 60;
@@ -43,7 +43,6 @@ function App() {
   const [removeSubmitting, setRemoveSubmitting] = useState(false);
   const [removeError, setRemoveError] = useState('');
   const [celebrate, setCelebrate] = useState(false);
-  const [showStory, setShowStory] = useState(false);
   const [previousCount, setPreviousCount] = useState(null);
 
   const count = donations.length;
@@ -158,7 +157,7 @@ function App() {
       }
       setModalOpen(false);
     } catch {
-      setError('That did not go through. Your donation was not recorded — please try again.');
+      setError('That did not go through. Your donation was not recorded, please try again.');
       setStep('confirm');
     } finally {
       setSubmitting(false);
@@ -206,7 +205,7 @@ function App() {
 
         <section className="story section-wrap">
           <div className="story-photo"><img src={`${import.meta.env.BASE_URL}images/joe-standing.jpeg`} alt="Joe smiling outdoors" /><span className="photo-note">60 years<br />of showing up</span></div>
-          <div className="story-copy"><p className="eyebrow">A birthday wish, reimagined</p><h2>In honour of Joe’s 60th birthday, we’re turning <em>60 years</em> into 60 pints of giving.</h2><p>As the years go by, Joe is reminded of just how delicate and precious life is — especially as many of his loved ones have endured hardships where blood donations have made a significant impact on their way to recovery.</p><button className="text-button" onClick={() => setShowStory(value => !value)}>{showStory ? 'Read less' : 'Read Joe’s story'} <ChevronDown className={showStory ? 'rotated' : ''} size={18} /></button>{showStory && <div className="story-more"><p>Let’s honour those whose selflessness and generosity has aided our loved ones in times of need. For Joe’s birthday wish, he would like to celebrate by giving back.</p><p>Please make his wish come true and donate blood this year. It’s a small gesture that can have an incredible impact — and a meaningful way to celebrate 60 years of life, love, and the people who make it special.</p></div>}</div>
+          <div className="story-copy"><p className="eyebrow">A birthday wish, reimagined</p><h2>In honour of Joe’s 60th birthday, we’re turning <em>60 years</em> into 60 pints of giving.</h2><p>As the years go by, Joe is reminded of just how delicate and precious life is, especially as many of his loved ones have endured hardships where blood donations have made a significant impact in their way to recovery ❤️‍🩹</p><div className="story-more"><p>Let’s honour those whose selflessness and generosity has aided our loved ones in times of need. For Joe’s birthday wish, he would like to celebrate by giving back.</p><p>Please make his wish come true and donate blood this year!</p><p>It’s a small gesture that can have an incredible impact, and a meaningful way to celebrate 60 years of life, love, and the people who make it special.</p></div></div>
         </section>
 
         <section className="donor-section section-wrap" id="donors">
@@ -218,7 +217,7 @@ function App() {
       </main>
 
       <footer><div className="brand"><span>J</span><span>60</span></div><p>Made with love for Joe’s 60th.</p><a href="#donors">View the giving circle <ArrowDownRight size={16} /></a></footer>
-      {celebrate && <div className="celebration" role="status"><Sparkles size={22} /><strong>We made it!</strong><span>60 pints donated — and counting.</span><button onClick={() => setCelebrate(false)} aria-label="Dismiss celebration"><X size={18} /></button></div>}
+      {celebrate && <div className="celebration" role="status"><Sparkles size={22} /><strong>We made it!</strong><span>60 pints donated, and counting.</span><button onClick={() => setCelebrate(false)} aria-label="Dismiss celebration"><X size={18} /></button></div>}
       {modalOpen && <div className="modal-backdrop" role="presentation" onMouseDown={event => event.target === event.currentTarget && setModalOpen(false)}><div className="donation-modal" role="dialog" aria-modal="true" aria-labelledby="donation-title"><button className="modal-close" onClick={() => setModalOpen(false)} aria-label="Close"><X /></button>{step === 'remove' ? <><div className="confirm-mark"><Trash2 size={32} /></div><p className="eyebrow">Protected action</p><h2 id="donation-title">Remove this donation?</h2><p className="modal-lede">Enter the campaign admin password to remove <strong>{selectedDonation?.donor_name}</strong> from the shared list. This cannot be undone.</p><label htmlFor="removal-password">Admin password</label><input id="removal-password" type="password" autoFocus value={removalPassword} onChange={event => setRemovalPassword(event.target.value)} onKeyDown={event => event.key === 'Enter' && removeDonation()} />{removeError && <p className="form-error" role="alert">{removeError}</p>}<div className="confirm-actions"><button className="secondary-button" onClick={() => setModalOpen(false)}>Cancel</button><button className="primary-button" disabled={removeSubmitting || !removalPassword} onClick={removeDonation}>{removeSubmitting ? <><LoaderCircle className="spin" size={18} /> Removing…</> : <>Remove pint <Trash2 size={17} /></>}</button></div></> : step === 'name' ? <><p className="eyebrow">Join the giving circle</p><h2 id="donation-title">Who’s donating today?</h2><p className="modal-lede">Your name is optional. We’ll add it to the shared list so everyone can feel the momentum.</p><label htmlFor="donor-name">Your name <span>(optional)</span></label><input id="donor-name" autoFocus value={name} onChange={event => setName(event.target.value.slice(0, 80))} placeholder="e.g. Sarah" onKeyDown={event => event.key === 'Enter' && setStep('confirm')} /><label className="anonymous-check"><input type="checkbox" checked={!name} onChange={event => event.target.checked && setName('')} /><span>Donate anonymously</span></label><button className="primary-button modal-button" onClick={() => setStep('confirm')}>Continue <ArrowUpRight size={18} /></button></> : <><div className="confirm-mark">🩸</div><p className="eyebrow">Just to confirm</p><h2 id="donation-title">Are you sure you donated a pint of blood?</h2><p className="modal-lede">You’re recording this as <strong>{name.trim() || 'Anonymous'}</strong>. This can’t be edited or removed later.</p>{error && <p className="form-error" role="alert">{error}</p>}<div className="confirm-actions"><button className="secondary-button" onClick={() => setStep('name')}>Go back</button><button className="primary-button" disabled={submitting} onClick={submitDonation}>{submitting ? <><LoaderCircle className="spin" size={18} /> Saving…</> : <>Yes, record my pint <Check size={18} /></>}</button></div></>}</div></div>}
     </div>
   );
