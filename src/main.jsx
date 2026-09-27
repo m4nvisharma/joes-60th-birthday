@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createClient } from '@supabase/supabase-js';
-import { ArrowUpRight, Check, LoaderCircle, Sparkles, Trash2, X } from 'lucide-react';
+import { ArrowUpRight, Check, Copy, LoaderCircle, Share2, Sparkles, Trash2, X } from 'lucide-react';
 import './styles.css';
 
 const GOAL = 60;
@@ -42,6 +42,7 @@ function App() {
   const [removalPassword, setRemovalPassword] = useState('');
   const [removeSubmitting, setRemoveSubmitting] = useState(false);
   const [removeError, setRemoveError] = useState('');
+  const [shareMessage, setShareMessage] = useState('');
   const [celebrate, setCelebrate] = useState(false);
   const [previousCount, setPreviousCount] = useState(null);
 
@@ -108,6 +109,28 @@ function App() {
     setName('');
     setStep('name');
     setModalOpen(true);
+  }
+
+  async function shareCampaign() {
+    const shareData = {
+      title: "Joe's 60th · A birthday worth bleeding for",
+      text: "Help turn Joe's 60th birthday into 60 pints of giving.",
+      url: window.location.href
+    };
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+        setShareMessage('Link copied');
+        window.setTimeout(() => setShareMessage(''), 2200);
+      }
+    } catch (shareError) {
+      if (shareError.name !== 'AbortError') {
+        setShareMessage('Could not share');
+        window.setTimeout(() => setShareMessage(''), 2200);
+      }
+    }
   }
 
   function beginRemoval(donation) {
@@ -213,7 +236,7 @@ function App() {
           <div className="donor-grid"><div className="donor-image"><img src={`${import.meta.env.BASE_URL}images/joe-selfie.jpeg`} alt="Joe taking a selfie" /><div className="image-caption">One small act.<br /><strong>A lasting impact.</strong></div></div><div className="donor-list" aria-live="polite">{loading ? <div className="empty-state"><LoaderCircle className="spin" /> Loading the giving circle…</div> : sortedDonations.length === 0 ? <div className="empty-state">Be the first name on the list.</div> : sortedDonations.map((donor, index) => <div className="donor-row" key={donor.id}><span className="donor-index">{String(sortedDonations.length - index).padStart(2, '0')}</span><strong>{donor.donor_name}</strong><time>{formatDate(donor.created_at)}</time><Check size={17} /><button className="remove-button" onClick={() => beginRemoval(donor)} aria-label={`Remove donation from ${donor.donor_name}`}><Trash2 size={14} /></button></div>)}</div></div>
         </section>
 
-        <section className="closing section-wrap"><div><p className="eyebrow">A little birthday math</p><h2>One pint can help save up to <em>three lives.</em></h2></div><div className="closing-cta"><p>Make Joe’s 60th birthday wish come true. Your name is optional. Your impact isn’t.</p></div></section>
+        <section className="closing section-wrap"><div><p className="eyebrow">A little birthday math</p><h2>One pint can help save up to <em>three lives.</em></h2></div><div className="closing-cta"><p>Make Joe’s 60th birthday wish come true. Your name is optional. Your impact isn’t.</p><button className="share-button" onClick={shareCampaign}>{shareMessage ? <><Copy size={16} /> {shareMessage}</> : <><Share2 size={16} /> Share Joe’s birthday wish</>}</button></div></section>
       </main>
 
       <footer><div className="brand"><span>J</span><span>60</span></div><p>Made with love for Joe’s 60th.</p><span className="footer-note">A little more love, one pint at a time ♡</span></footer>
