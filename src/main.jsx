@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createClient } from '@supabase/supabase-js';
-import { ArrowDownRight, ArrowUpRight, Check, ChevronDown, Heart, LoaderCircle, Plus, Sparkles, X } from 'lucide-react';
+import { ArrowDownRight, ArrowUpRight, Check, ChevronDown, LoaderCircle, Sparkles, X } from 'lucide-react';
 import './styles.css';
 
 const GOAL = 60;
@@ -181,11 +181,11 @@ function App() {
         </section>
 
         <section className="donor-section section-wrap" id="donors">
-          <div className="donor-heading"><div><p className="eyebrow">The giving circle</p><h2>Recent donors</h2></div><button className="small-cta" onClick={beginDonation}><Plus size={17} /> Add your pint</button></div>
+          <div className="donor-heading"><div><p className="eyebrow">The giving circle</p><h2>Recent donors</h2></div></div>
           <div className="donor-grid"><div className="donor-image"><img src={`${import.meta.env.BASE_URL}images/joe-selfie.jpeg`} alt="Joe taking a selfie" /><div className="image-caption">One small act.<br /><strong>A lasting impact.</strong></div></div><div className="donor-list" aria-live="polite">{loading ? <div className="empty-state"><LoaderCircle className="spin" /> Loading the giving circle…</div> : sortedDonations.length === 0 ? <div className="empty-state">Be the first name on the list.</div> : sortedDonations.map((donor, index) => <div className="donor-row" key={donor.id}><span className="donor-index">{String(sortedDonations.length - index).padStart(2, '0')}</span><strong>{donor.donor_name}</strong><time>{formatDate(donor.created_at)}</time><Check size={17} /></div>)}</div></div>
         </section>
 
-        <section className="closing section-wrap"><div><p className="eyebrow">A little birthday math</p><h2>One pint can help save up to <em>three lives.</em></h2></div><div className="closing-cta"><p>Make Joe’s 60th birthday wish come true. Your name is optional. Your impact isn’t.</p><button className="primary-button" onClick={beginDonation}>I donated a pint <Heart size={17} fill="currentColor" /></button></div></section>
+        <section className="closing section-wrap"><div><p className="eyebrow">A little birthday math</p><h2>One pint can help save up to <em>three lives.</em></h2></div><div className="closing-cta"><p>Make Joe’s 60th birthday wish come true. Your name is optional. Your impact isn’t.</p></div></section>
       </main>
 
       <footer><div className="brand"><span>J</span><span>60</span></div><p>Made with love for Joe’s 60th.</p><a href="#donors">View the giving circle <ArrowDownRight size={16} /></a></footer>
