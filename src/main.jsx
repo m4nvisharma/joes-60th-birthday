@@ -200,7 +200,6 @@ function App() {
             <p className="eyebrow">A campaign of life &amp; love</p>
             <h1>A birthday<br /><em>worth</em><br /><strong>bleeding</strong><br />for.</h1>
             <p className="hero-intro">For Joe’s 60th, we’re turning one birthday wish into something that can keep giving: <strong>60 pints of blood.</strong></p>
-            <button className="primary-button" onClick={beginDonation}>Donate now <ArrowUpRight size={18} /></button>
           </div>
           <div className="hero-art" aria-label={`${count} pints donated out of 60`}>
             <div className="orbit orbit-one" /><div className="orbit orbit-two" />
@@ -228,7 +227,7 @@ function App() {
 
         <section className="story section-wrap">
           <div className="story-photo"><img src={`${import.meta.env.BASE_URL}images/joe-standing.jpeg`} alt="Joe smiling outdoors" /><span className="photo-note">60 years<br />of showing up</span></div>
-          <div className="story-copy"><p className="eyebrow">A birthday wish, reimagined</p><h2>In honour of Joe’s 60th birthday, we’re turning <em>60 years</em> into 60 pints of giving.</h2><p>As the years go by, Joe is reminded of just how delicate and precious life is — especially as many of his loved ones have endured hardships where blood donations have made a significant impact in their way to recovery.</p><div className="story-more"><p>Let’s honour those whose selflessness and generosity has aided our loved ones in times of need. For Joe’s birthday wish, he would like to celebrate by giving back.</p><p>Please make his wish come true and donate blood this year. It’s a small gesture that can have an incredible impact — and a meaningful way to celebrate 60 years of life, love, and the people who make it special.</p></div></div>
+          <div className="story-copy"><p className="eyebrow">A birthday wish, reimagined</p><h2>In honour of Joe’s 60th birthday, we’re turning <em>60 years</em> into 60 pints of giving.</h2><p>As the years go by, Joe is reminded of just how delicate and precious life is — especially as many of his loved ones have endured hardships where blood donations have made a significant impact in their way to recovery.</p><div className="story-more"><p>Let’s honour those whose selflessness and generosity has aided our loved ones in times of need. For Joe’s birthday wish, he would like to celebrate by giving back.</p><p>Please make his wish come true and donate blood this year. It’s a small gesture that can have an incredible impact — and a meaningful way to celebrate 60 years of life, love, and the people who make it special.</p></div><button className="primary-button story-donate-button" onClick={beginDonation}>I donated <ArrowUpRight size={18} /></button></div>
         </section>
 
         <section className="donor-section section-wrap" id="donors">
